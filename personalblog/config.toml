@@ -1,0 +1,5 @@
+baseURL = 'http://personalblog.github.io/'
+languageCode = 'en-us'
+title = 'KG Blog'
+
+theme = "hugo-blog-awesome"
