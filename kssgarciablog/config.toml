@@ -1,6 +1,6 @@
-baseURL = 'http://example.org/'
+baseURL = 'http://kssgarcia.github.io/'
 languageCode = 'en-us'
-title = 'My New Hugo Site'
+title = 'Kssgarcia'
 theme = "hugo-blog-awesome"
 
 # ------------------- Language Config ------------------
@@ -38,7 +38,7 @@ enableEmoji = true
 
 [params.author]
   avatar = "img/avatar.jpeg"
-  intro = "Kevin S Sepúlveda G."
+  intro = "My Blog"
   name = "Sepúlveda K"
   description = "A space where I can show a part of me."
 
