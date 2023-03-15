@@ -1,0 +1,51 @@
+baseURL = 'http://example.org/'
+languageCode = 'en-us'
+title = 'My New Hugo Site'
+theme = "hugo-blog-awesome"
+
+# ------------------- Language Config ------------------
+
+# ------------------- Theme Config ------------------
+googleAnalytics = '' # G-MEASUREMENT_ID
+# Enable emojis globally
+enableEmoji = true
+
+# set markup.highlight.noClasses=false to enable code highlight
+[markup]
+  [markup.highlight]
+    noClasses = false
+
+[menu]
+  [[menu.main]] 
+    # The page reference (pageRef) is useful for menu highlighting
+    # When pageRef is set, setting `url` is optional; it will be used as a fallback if the page is not found.
+    pageRef="/"
+    name = 'Home'
+    url = '/'
+    weight = 10
+  [[menu.main]]
+    pageRef="posts"
+    name = 'Posts'
+    url = '/posts/'
+    weight = 20
+  [[menu.main]]
+    name = 'Portafolio'
+    url = 'https://kssgarcia.up.railway.app/'
+    weight = 30
+
+[params]
+  defaultColor = "dark" # set default color mode: dark or light
+
+[params.author]
+  avatar = "img/avatar.jpeg"
+  intro = "Kevin S Sepúlveda G."
+  name = "Sepúlveda K"
+  description = "A space where I can show a part of me."
+
+[[params.socialIcons]]
+name = "github"
+url = "https://github.com/kssgarcia"
+
+[[params.socialIcons]]
+name = "Instagram"
+url = "https://www.instagram.com/kssgarcia7/"
