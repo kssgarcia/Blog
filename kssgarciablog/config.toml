@@ -3,6 +3,9 @@ languageCode = 'en'
 title = 'Kssgarcia'
 theme = "hugo-blog-awesome"
 
+
+# ------------------- Comments Config ------------------
+
 # ------------------- Language Config ------------------
 
 defaultContentLanguage = 'en'
