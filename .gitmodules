@@ -1,3 +1,7 @@
 [submodule "kssgarciablog/themes/hugo-blog-awesome"]
 	path = kssgarciablog/themes/hugo-blog-awesome
 	url = https://github.com/hugo-sid/hugo-blog-awesome.git
+[submodule "kssgarciablog/public"]
+	path = kssgarciablog/public
+	url = https://github.com/kssgarcia/kssgarcia.github.io.git
+	branch = main
