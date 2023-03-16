@@ -4,18 +4,14 @@ title = 'Kssgarcia'
 theme = "hugo-blog-awesome"
 
 
-# ------------------- Comments Config ------------------
-
 # ------------------- Language Config ------------------
 
 defaultContentLanguage = 'en'
 [languages]
   [languages.en]
-    contentDir = 'content/posts/english'
     languageName = 'English'
     weight = 10
   [languages.es]
-    contentDir = 'content/posts/spanish'
     languageName = 'Spanish'
     weight = 20
 
