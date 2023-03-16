@@ -20,4 +20,4 @@ Displacements, stresses, deformation, weight, geometry, forces, rigidity are som
 
 ### References
 
-1. Peter W. Christensen, A. K. (2009). _An Introduction to Structural Optimization_. Retrieve of http://gen.lib.rus.ec/book/index.php?md5=4d3f914b0552215d09b5b1ff589537e4
+1. Peter W. Christensen, A. K. (2009). _An Introduction to Structural Optimization_. Retrieve of https://link.springer.com/book/10.1007/978-1-4020-8666-3

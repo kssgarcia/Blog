@@ -1,15 +1,14 @@
 ---
-title: "Instalar OneDriver en linux"
+title: "Instalación de OneDriver en Linux"
 date: 2023-02-10T11:48:52-05:00
 draft: false
 ---
 
+Esta publicación es una guía de instalación para OneDriver en distribuciones Ubuntu o Debian.
 
-This post is an installation's guide for OneDriver on Ubuntu or Debian distributions.
+Casi toda mi vida he usado una computadora con sistema operativo Windows, hace algún tiempo decidí probar el sistema operativo Linux, solo por curiosidad, así que hice un arranque dual en mi computadora portátil dándome la posibilidad de usar Linux y Windows, decidí hacer esto porque hay algunos programas que no están disponibles en Linux. Después de investigar un poco y leer sobre Linux y cómo este sistema operativo es mejor para la programación, exporté todo mi flujo de trabajo de Windows a Linux, utilicé la distribución de Ubuntu para la instalación. Después de algunas semanas tuve un problema cuando cambiaba a otras computadoras, que en la mayoría tienen Windows, esto fue una dificultad para mí porque no tenía alguna herramienta que me permitiera conectar fácilmente los dos sistemas diferentes. Así que comencé a buscar alguna herramienta en la nube que me permitiera hacerlo, y encontré una herramienta perfecta llamada OneDriver fácil de usar e instalar, en concreto este programa es un sistema de archivos nativo de Linux para Microsoft OneDrive.
 
-Almost my entire life I have used a computer with Windows operating system, some mouth ago I decide to try Linux operating system, just for curiosity, so I made a dual boot in my laptop giving me the possibility to use Linux and Windows, I decided to make this because there are some programs which aren't available on Linux. After some research and post read about Linux and how this operating system is better for programming I exported all my work flow from Windows to Linux, I used Ubuntu distribution for facility. After some weeks I had a problem when I changed to other computers, which in most they has Windows, this was a difficulty for me because I didn't have some tool that allowed me to connect easily the two different system. So I started to search some cloud tool that let me do it, and I found a perfect tool call [OneDriver](https://github.com/jstaf/onedriver#onedriver) easy to use and install, in specific this program is a native Linux file system for Microsoft OneDrive.
-
-Installation:
+Instalación:
 
 ``` 
 $ sudo add-apt-repository ppa:jstaf/onedriver
@@ -17,6 +16,7 @@ $ sudo apt update
 $ sudo apt install onedriver
 ```
 
-After make the execution of these commands it will add a `.desktop` file in `/usr/share/applications/` folder. After this, open the [OneDriver](https://github.com/jstaf/onedriver#onedriver) app, setting up the folder where your OneDrive files will remain and make sync with your Microsoft OneDrive account.
+Después de realizar la ejecución de estos comandos se agregará un archivo `.desktop` en la carpeta `/usr/share/applications/`. Posteriormente de esto, abra la aplicación [OneDriver](https://github.com/jstaf/onedriver#onedriver), configure la carpeta donde permanecerán sus archivos de OneDrive y realice la sincronización con su cuenta de Microsoft OneDrive.
 
-Using this program will be easier to keep your work flow when it is necessary to change to other operating systems or computer.
+
+El uso de este programa será más fácil para mantener su flujo de trabajo cuando sea necesario cambiar a otros sistemas operativos o computadora.

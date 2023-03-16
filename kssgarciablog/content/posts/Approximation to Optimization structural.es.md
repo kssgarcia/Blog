@@ -1,21 +1,23 @@
 ---
-title: "Acercamiento a optimzación estructural"
+title: "Instalación de OneDriver en Linux"
 date: 2023-02-16T11:48:52-05:00
 draft: false
 ---
 
-hola
+En este post se hablará de optimización estructural desde un punto más general, con el objetivo de afianzar las bases para futuras aplicaciones.
 
-Structural optimization uses a mathematical model, this consists of identifying an objective function, this function is the one that classifies the design and will be the result that will seek to minimize or maximize. Design variable, is a function or vector that defines the desire, can be geometry or material. State variable, represents the response of the structure, such as stresses, deformations, displacements, etc. 
+Para entender de forma simple el trasfondo de la optimización estructural es buena idea separar los dos términos y tomar la definición de cada uno. La optimización consiste en hacer las cosas mejor y una estructura se puede entender como un ensamble de material que tiene como propósito soportar cargar. Por lo tanto, la optimización estructural sé puede definir como la técnica de hacer que un ensamble de material soporte cargas de la mejor manera [1]. Esta definición es una idea abstracta de lo que es la optimización estructural, pero es un acercamiento simple que supone una idea más intuitiva del concepto. Cuando se menciona hacer lo “mejor” de algo por lo general lo que sé busca es minimizar y maximizar, un caso común en ingeniería es que se busque reducir los gastos de un proceso, esto se traduce a minimizar el costo de operación.
 
-Structural optimization can be divided into three cases:
+La optimización estructural utiliza un modelo matemático, este consiste en identificar una función objetivo, esta función es la que clasifica el diseño y será el su resultado el que se buscara minimizar o maximizar. Variable de diseño, es una función o vector que define el de sino, puede ser geometría o material. Variable de estado, representa la respuesta de la estructura, como los esfuerzos, deformaciones, desplazamientos, etc.
 
-- Size optimization: is the dimensions minimization and maximization.
-- Shape optimization: refers to the domain e.i in a problem of values on the border shape optimization refers to choosing the domain that will make the structure present less effort.
-- Topological optimization: it is the configuration of material, topological optimization allows the elimination of material creating holes in the model, this can be with the aim of minimizing the amount of material. This case is the most studied in engineering.
+La optimización estructural se puede dividir en tres casos:
 
-Displacements, stresses, deformation, weight, geometry, forces, rigidity are some of the variables that can be optimized. An optimization problem is to choose one of these variables as a function to minimize or maximize and use a different one as a constraint. 
+- Optimización de tamaño: es la minimización o maximizaron de las dimensiones del modelo.
+- Optimización de forma: se refiere al dominio e.i en un problema de valores en la frontera, la optimización de forma se refiere a escoger el dominio que hará que la estructura presénteme menores esfuerzos.
+- Optimización topológica: es la configuración de material, la optimización topológica permite la eliminación de material creando agujeros en el modelo, esto puede ser con el objetivo de minimizar la cantidad de material. Este caso es el que más se estudia en ingeniería.
 
-### References
+Los desplazamientos, esfuerzos, deformación, peso, geometría, fuerzas, rigidez son algunas de las variables que pueden optimizarse. Un problema de optimización consiste en elegir alguna de estas variables como función a minimizar o maximizar y usar otra diferente como restricción.
 
-1. Peter W. Christensen, A. K. (2009). _An Introduction to Structural Optimization_. Retrieve of http://gen.lib.rus.ec/book/index.php?md5=4d3f914b0552215d09b5b1ff589537e4
+### Referencias
+
+1. Peter W. Christensen, A. K. (2009). An Introduction to Structural Optimization. Recuperado de https://link.springer.com/book/10.1007/978-1-4020-8666-3
