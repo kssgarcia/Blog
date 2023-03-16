@@ -1,5 +1,5 @@
 ---
-title: "Instalación de OneDriver en Linux"
+title: "Aproximación a optimización estructural"
 date: 2023-02-16T11:48:52-05:00
 draft: false
 ---
