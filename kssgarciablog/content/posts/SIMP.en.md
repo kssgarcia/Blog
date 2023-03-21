@@ -202,10 +202,9 @@ where $r_{ij}$ is the distance between the centers of the elements $i$ and $j$. 
 
 1. Discretize the domain and assign the initial property, $x_{min}$ or 1, to each element.
 2. Perform the finite element analysis and calculate the sensitivity according to (12).
-3. Average the sensitivity of the sensitivity with history and save the result for the next iteration.
-4. Apply the filter scheme (15).
-5. Add and remove items.
-6. Repeat steps 2 to 5 until reaching volume $V^*$.
+3. Apply the filter scheme (15).
+4. Add and remove items.
+5. Repeat steps 2 to 4 until reaching volume $V^*$.
 
 ## References
 

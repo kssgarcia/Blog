@@ -202,10 +202,9 @@ donde $r_{ij}$ es la distancia entre los centros de los elementos $i$ y $j$. El 
 
 1. Discretizar el dominio y asignar la propiedad inicial, $x_{min}$ o 1, para cada elemento.
 2. Realizar el análisis de elementos finito y calcular la sensibilidad de acuerdo con (12).
-3. Promediar la sensibilidad de la sensibilidad con el historial y guardar el resultado para la siguiente iteración .
-4. Aplicar el esquema de filtro (15).
-5. Añadir y eliminar elementos.
-6. repetir los pasos del 2 al 5 hasta llegar al volumen $V^*$.
+3. Aplicar el esquema de filtro (15).
+4. Añadir y eliminar elementos.
+5. repetir los pasos del 2 al 4 hasta llegar al volumen $V^*$.
 
 ## Referencias
 
