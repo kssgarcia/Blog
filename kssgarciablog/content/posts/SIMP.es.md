@@ -194,7 +194,7 @@ donde $N$ es el numero total de elementos en la malla y $H_{ij}$ es el factor de
 
 $$
 \begin{equation}
-H_{i j}=r_{\min }-r_{i j}, \quad\left\{i \in N \mid r_{i j} \leq r_{\min }\right\}
+H_{i j}=r_{\min }-r_{i j}, \quad \lbrace i \in N | r_{ij} \leq r_{min} \rbrace
 \tag{16}
 \end{equation}
 $$

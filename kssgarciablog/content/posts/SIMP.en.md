@@ -192,7 +192,7 @@ where $N$ is the total number of elements in the mesh and $H_{ij}$ is the weight
 
 $$
 \begin{equation}
-H_{i j}=r_{\min }-r_{i j}, \quad\left\{i \in N \mid r_{i j} \leq r_{\min }\right\}
+H_{i j}=r_{\min }-r_{i j}, \quad \lbrace i \in N | r_{ij} \leq r_{min} \rbrace
 \tag{16}
 \end{equation}
 $$
