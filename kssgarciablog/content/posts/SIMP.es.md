@@ -160,8 +160,8 @@ El problema de optimización anterior se puede resolver por diferentes acercamie
 
 $$
 \begin{equation}
-x_i^{K+1}= \begin{cases}\max \left(x_{\min }, x_i^K-m\right) & \text { si } x_i^K B_i^\eta \leq \max \left(x_{\min }, x_i^K-m\right) \\
-\min \left(1, x_i^K+m\right) & \text { si } \min \left(1, x_i^K+m\right) \leq x_i^K B_i^\eta \\
+x_i^{K+1}= \begin{cases}\max \left(x_{\min }, x_i^K-m\right) & \text { si } x_i^K B_i^\eta \leq \max \left(x_{\min }, x_i^K-m\right) \\\
+\min \left(1, x_i^K+m\right) & \text { si } \min \left(1, x_i^K+m\right) \leq x_i^K B_i^\eta \\\
 x_i^K B_i^\eta & \text { de otro modo }\end{cases}
 \tag{13}
 \end{equation}

@@ -158,11 +158,11 @@ $$
   
 The previous optimization problem can be solved by different approaches such as the optimality criterion. A scheme for updating the layout variable can be
 
+
 $$
-\begin{equation}
-x_i^{K+1}= \begin{cases}\max \left(x_{\min }, x_i^K-m\right) & \text { if } x_i^K B_i^\eta \leq \max \left( x_{\min }, x_i^K-m\right) \\ \min \left(1, x_i^K+m\right) & \text { if } \min \left(1, x_i^K+m\right) \leq x_i^K B_i^\eta \\ x_i^K B_i^\eta & \text { otherwise }\end{cases}
+x_i^{K+1}= \begin{cases}\max \left(x_{\min }, x_i^K-m\right) & \text { if } x_i^K B_i^\eta \leq \max \left( x_{\min }, x_i^K-m\right) \\\ \min \left(1, x_i^K+m\right) & \text { if } \min \left(1, x_i^K+m\right) \leq x_i^K B_i^\eta \\\ x_i^K B_i^\eta & \text { otherwise }
+\end{cases}
 \tag{13}
-\end{equation}
 $$
 
 where $x_i^K$ denotes the design value at iteration $K$, $m$ is the positive limit motion, $\eta$ is the damping ratio (usually $0.5$) and $B_i$ is obtained from the optimality condition
