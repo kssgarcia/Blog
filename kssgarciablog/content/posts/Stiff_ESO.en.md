@@ -1,5 +1,5 @@
 ---
-title: "ESO optimization code."
+title: "Stiff bases ESO optimization code"
 date: 2023-04-23T11:48:52-05:00
 draft: false
 math: true
@@ -20,9 +20,9 @@ First, let's consider the following steps to do algorithm:
 
 1. Discretization of the model in finite elements
 2. Perform the finite element analysis of the structure.
-3. Remove elemens with less Von Mises stress.
-4. Increase the rejection ratio.
-5. Repeat steps 2-4 until the volume's fraction is reached.
+3. Calculate the sensitivity number for each element.
+4. Remove a number of elements with the lowest ensitivity nubers according to a predifined element removal ratio ERR.
+5. Repeat step 2 to 4 until volume fraction is reached.
 
 ### Discretization
 
@@ -97,10 +97,12 @@ elsI,nodesI = np.copy(els), np.copy(nodes)
 
 With these variables we can now solve the problem and obtain the displacements, deformations and stresses. To compute the finite element analysis the library [Solidspy](https://github.com/AppliedMechanics-EAFIT/SolidsPy) is used .
 
-``` python 
+``` python
 def preprocessing(nodes, mats, els, loads):
     """
     Compute IBC matrix and the static solve.
+    
+    Get from: https://github.com/AppliedMechanics-EAFIT/SolidsPy/blob/master/solidspy/solids_GUI.py
     
     Parameters
     ----------
@@ -135,9 +137,12 @@ def preprocessing(nodes, mats, els, loads):
         print("The system is not in equilibrium!")
     return bc_array, disp
 
-def postprocessing(nodes, mats, els, IBC, UG):
+
+def postprocessing(nodes, mats, els, bc_array, disp):
     """
     Compute the nodes displacements, strains and stresses.
+    
+    Get from: https://github.com/AppliedMechanics-EAFIT/SolidsPy/blob/master/solidspy/solids_GUI.py
     
     Parameters
     ----------
@@ -161,29 +166,79 @@ def postprocessing(nodes, mats, els, IBC, UG):
     stress_nodes : ndarray 
         Stresses at elements.
     """   
-
-	disp_complete = pos.complete_disp(bc_array, nodes, disp)
-	strain_nodes, stress_nodes = None, None
-	strain_nodes, stress_nodes = pos.strain_nodes(nodes, els, mats, disp_complete)
-
-	return disp_complete, strain_nodes, stress_nodes
+    
+    disp_complete = pos.complete_disp(bc_array, nodes, disp)
+    strain_nodes, stress_nodes = None, None
+    strain_nodes, stress_nodes = pos.strain_nodes(nodes, els, mats, disp_complete)
+    
+    return disp_complete, strain_nodes, stress_nodes
 ```
+
+### Sensitivity computation 
+
+To calculate the sensitivity number of each elements we have to compute the following equation:
+
+$$
+\begin{equation}
+\alpha^e_i = \frac{1}{2}u^T_i K_iu_i
+\end{equation}
+$$
+where $u_i$  and $K_i$  are the element's displacement and the local stiffnes matrix, respectively.
+
+``` python
+def sensi_el(nodes, mats, els, UC):
+    """
+    Calculate the sensitivity number for each element.
+    
+    Parameters
+    ----------
+    nodes : ndarray
+        Array with models nodes
+    mats : ndarray
+        Array with models materials
+    els : ndarray
+        Array with models elements
+    UC : ndarray
+        Displacements at nodes
+
+    Returns
+    -------
+    sensi_number : ndarray
+        Sensitivity number for each element.
+    """   
+    sensi_number = []
+    for el in range(len(els)):
+        params = tuple(mats[els[el, 2], :])
+        elcoor = nodes[els[el, -4:], 1:3]
+        kloc, _ = uel.elast_quad4(elcoor, params)
+
+        node_el = els[el, -4:]
+        U_el = UC[node_el]
+        U_el = np.reshape(U_el, (8,1))
+        a_i = 0.5 * U_el.T.dot(kloc.dot(U_el))[0,0]
+        sensi_number.append(a_i)
+    sensi_number = np.array(sensi_number)
+    sensi_number = sensi_number/sensi_number.max()
+
+    return sensi_number
+```
+
 
 
 ### Optimization
 
 First let's define the number of iteration `niter`, rejection ratio `RR`,  the evolution ratio `ER` and the optimila volume fraction `V_opt`. 
 
-In the ciclye sequence first we check if the system is still in equilibrium if it's not so the loop will be stop; after that, we solve the problem and calculate the Von Mises stress for each element and scale it. `mask_del` is a numpy array with of type bool with same size of `els`, the positions with value `True` will indicate that the element in that exact position will be removed, with the function `protect_els()` we will avoid the removal of the elements where the loads and boundary conditions were defined.
+In the ciclye sequence first we check if the system is still in equilibrium if it's not so the loop will be stop; after that, we solve the problem and calculate the sensitivity number, after this we get the `mask_del` creating a bool array with the values of `sensi_number` array that are smaller than `RR` , the positions with value `True` will indicate that the element in that exact position will be removed, with the function `protect_els()` we will avoid the removal of the elements where the loads and boundary conditions were defined.
 
 After deleting the elements of the array we have to do a step more to ensure that the FEM analysis won't fail withthe new `els` array, for this we have to restrict the free nodes `del_node()`. As last step we encrease the rejection ratio.
 
 ``` python
-
-
 def is_equilibrium(nodes, mats, els, loads):
     """
     Check if the system is in equilibrium
+    
+    Get from: https://github.com/AppliedMechanics-EAFIT/SolidsPy/blob/master/solidspy/solids_GUI.py
     
     Parameters
     ----------
@@ -203,13 +258,13 @@ def is_equilibrium(nodes, mats, els, loads):
     """   
 
     equil = True
-    DME, IBC, neq = ass.DME(nodes, els)
-    KG = ass.assembler(els, mats, nodes, neq, DME)
-    RHSG = ass.loadasem(loads, IBC, neq)
-    UG = sol.static_sol(KG, RHSG)
-    
-    if not(np.allclose(KG.dot(UG)/KG.max(), RHSG/KG.max())):
+    assem_op, bc_array, neq = ass.DME(nodes[:, -2:], els, ndof_el_max=8)
+    stiff_mat, _ = ass.assembler(els, mats, nodes[:, :3], neq, assem_op)
+    rhs_vec = ass.loadasem(loads, bc_array, neq)
+    disp = sol.static_sol(stiff_mat, rhs_vec)
+    if not np.allclose(stiff_mat.dot(disp)/stiff_mat.max(), rhs_vec/stiff_mat.max()):
         equil = False
+
     return equil
 
 def strain_els(els, E_nodes, S_nodes):
@@ -320,25 +375,26 @@ def protect_els(els, loads, BC):
         
     return mask_els
 
+
+
 niter = 200
 RR = 0.01
 ER = 0.005
-V_opt = volume(els, length, height, nx, ny) * 0.60
-
+V_opt = volume(els, length, height, nx, ny) * 0.50
 ELS = None
 for _ in range(niter):
-
-    if not is_equilibrium(nodes, mats, els, loads) or volume(els, length, height, nx, ny) < V_opt: break
-    ELS = els
+    if not is_equilibrium(nodes, mats, els, loads) or volume(els, length, height, nx, ny) < V_opt: 
+        print('Is not equilibrium')
+        break
     
     IBC, UG = preprocessing(nodes, mats, els, loads)
     UC, E_nodes, S_nodes = postprocessing(nodes, mats, els, IBC, UG)
-    E_els, S_els = strain_els(els, E_nodes, S_nodes)
-    vons = np.sqrt(S_els[:,0]**2 - (S_els[:,0]*S_els[:,1]) + S_els[:,1]**2 + 3*S_els[:,2]**2)
-    RR_el = vons/vons.max()
-    mask_del = RR_el < RR
+
+    sensi_number = sensi_el(nodes, mats, els, UC)
+    mask_del = sensi_number < RR
     mask_els = protect_els(els, loads, BC)
     mask_del *= mask_els
+    ELS = els
     
     els = np.delete(els, mask_del, 0)
     del_node(nodes, els)
@@ -350,7 +406,7 @@ print(RR)
 
 As can be seen in _figure 2_ the results of the exercise proposed at the beginning of the post are presented, for graph _2.a_ it is evident that the method does converge to an optimal structure, however several free elements are evident that can also be eliminated to get a better topology. This problem occurs because the method does not take into account the dependency of the mesh and the checkerboard pattern. For better results, you can vary $RR$, $ER$, or also increase the number of finite elements.
 
-![Scenario 1: Across columns](/ESO_1.png)
+![Scenario 1: Across columns](/ESO_2.png)
 |:--:|
 | <b>Figure 2. ESO topologies for cantilever bea with diferent volume's fraction: (a) 80%; (b) 70%; (c) 60%; (d) 50%.</b>|
 

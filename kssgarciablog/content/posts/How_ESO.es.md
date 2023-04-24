@@ -5,7 +5,6 @@ draft: false
 math: true
 ---
 
-
 En esta publicación, presentaré un código Python para el método de optimización de ESO.
 
 ### Planteamiento del problema
@@ -86,7 +85,12 @@ def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):
 con esta función se definen las variables necesarias para hacer análisis de elementos finitos
 
 ``` python
- nodes, mats, els, loads, BC = beam()
+length = 20
+height = 10
+nx = 50
+ny= 20
+nodes, mats, els, loads, BC = beam(L=length, H=height, nx=nx, ny=ny)
+elsI,nodesI = np.copy(els), np.copy(nodes)
 ```
 
 ### Análisis de elementos finitos
@@ -111,25 +115,25 @@ def preprocessing(nodes, mats, els, loads):
         
     Returns
     -------
-    IBC : ndarray 
+    bc_array : ndarray 
         Boundary conditions array
-    UG : ndarray 
+    disp : ndarray 
         Static displacement solve.
     """   
 
-    # Pre-processing
-    DME, IBC, neq = ass.DME(nodes, els)
+    assem_op, bc_array, neq = ass.DME(nodes[:, -2:], els, ndof_el_max=8)
     print("Number of elements: {}".format(els.shape[0]))
 
     # System assembly
-    KG = ass.assembler(els, mats, nodes, neq, DME)
-    RHSG = ass.loadasem(loads, IBC, neq)
+    stiff_mat, _ = ass.assembler(els, mats, nodes[:, :3], neq, assem_op)
+    rhs_vec = ass.loadasem(loads, bc_array, neq)
 
     # System solution
-    UG = sol.static_sol(KG, RHSG)
-    if not(np.allclose(KG.dot(UG)/KG.max(), RHSG/KG.max())):
+    disp = sol.static_sol(stiff_mat, rhs_vec)
+    if not np.allclose(stiff_mat.dot(disp)/stiff_mat.max(),
+                       rhs_vec/stiff_mat.max()):
         print("The system is not in equilibrium!")
-    return IBC, UG
+    return bc_array, disp
 
 def postprocessing(nodes, mats, els, IBC, UG):
     """
@@ -150,19 +154,19 @@ def postprocessing(nodes, mats, els, IBC, UG):
         
     Returns
     -------
-    UC : ndarray 
+    disp_complete : ndarray 
         Displacements at elements.
-    E_nodes : ndarray 
+    strain_nodes : ndarray 
         Strains at elements.
-    S_nodes : ndarray 
+    stress_nodes : ndarray 
         Stresses at elements.
     """   
-    
-    UC = pos.complete_disp(IBC, nodes, UG)
-    E_nodes, S_nodes = None, None
-    E_nodes, S_nodes = pos.strain_nodes(nodes , els, mats, UC)
-    
-    return UC, E_nodes, S_nodes
+
+	disp_complete = pos.complete_disp(bc_array, nodes, disp)
+	strain_nodes, stress_nodes = None, None
+	strain_nodes, stress_nodes = pos.strain_nodes(nodes, els, mats, disp_complete)
+
+	return disp_complete, strain_nodes, stress_nodes
 ```
 
 
@@ -316,10 +320,11 @@ def protect_els(els, loads, BC):
         
     return mask_els
 
-niter = 40
+niter = 200
 RR = 0.01
-ER = 0.01
-V_opt = volume(els, length, height, nx, ny) * 0.50
+ER = 0.005
+V_opt = volume(els, length, height, nx, ny) * 0.60
+
 
 ELS = None
 for _ in range(niter):
