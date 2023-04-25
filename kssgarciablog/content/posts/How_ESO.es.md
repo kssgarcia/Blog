@@ -1,5 +1,5 @@
 ---
-title: "Código de optimización ESO."
+title: "Código de optimización ESO"
 date: 2023-04-23T11:48:52-05:00
 draft: false
 math: true
