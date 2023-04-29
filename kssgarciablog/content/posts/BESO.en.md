@@ -5,7 +5,7 @@ draft: false
 math: true
 ---
 
-In this post I will be present a python code for ESO optimization method.
+In this post I will be present a python code for BESO optimization method.
 
 ### Problem statement
 

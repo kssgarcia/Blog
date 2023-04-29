@@ -5,7 +5,7 @@ draft: false
 math: true
 ---
 
-En esta publicación, presentaré un código Python para el método de optimización de ESO.
+En esta publicación, presentaré un código Python para el método de optimización de BESO.
 
 ### Planteamiento del problema
 
