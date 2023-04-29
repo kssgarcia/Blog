@@ -502,10 +502,10 @@ for i in range(niter):
     sensi_nodes = sensitivity_nodes(nodes, adj_nodes, centers, sensi_e) #3.4
     sensi_number = sensitivity_filter(nodes, centers, sensi_nodes, r_min) #3.6
 
-    # Average the sensitivity numbers to the historical information 
+    # Avarage the sensitivity numbers to the historical information 
     if i > 0: 
         sensi_number = (sensi_number + sensi_I)/2 # 3.8
-    sesni_number = sensi_number/sensi_number.max()
+    sensi_number = sensi_number/sensi_number.max()
 
     # Check if the optimal volume is reached and calculate the next volume
     V_r = False
@@ -539,7 +539,6 @@ for i in range(niter):
 
     # Save the sensitvity number for the next iteration
     sensi_I = sensi_number.copy()
-
 ```
 
 # Results
