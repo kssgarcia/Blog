@@ -11,7 +11,7 @@ En esta publicación, presentaré un código Python para el método de optimizac
 
 Consideremos una viga en voladizo con una fuerza vertical de 10kN, dimensiones 20x10 metros, módulo joven de 206.8 GPa y relación de Poisson 0.28 figura 1 $RR=0.01$, $ERR=0.005$.
 
-![[ESO_model.png]]
+![Scenario 1: Across columns](/ESO_model.png)
 |:--:|
 | <b>Figura 1. Diagrama de vigas.</b>|
 
@@ -547,7 +547,7 @@ for i in range(niter):
 
 Como se puede apreciar en la _figura 2_ se presentan los resultados del ejercicio propuesto al inicio del post, para el gráfico _2.a_ se evidencia que el método converge a una estructura óptima. En este programa BESO, la dependencia de la malla y los problemas del patrón de tablero de ajedrez se consideran bajo el esquema de filtro _2.d_.
 
-![[BESO.png]]
+![Scenario 1: Across columns](/BESO.png)
 |:--:|
 | <b>Figura 2. Topologías BESO para vigas en voladizo con diferente fracción de volumen: (a) 80%; (b) 70%; c) 60 %; (d) 50%.</b>|
 
