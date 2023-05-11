@@ -29,7 +29,7 @@ Primero, consideremos los siguientes pasos para hacer el algoritmo:
 
 ### Discretización
 
-La discretización se realiza con la siguiente función con la ayuda de numpy
+La discretización se realiza con la siguiente función con la ayuda de NumPy
 
 ``` python
 def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):

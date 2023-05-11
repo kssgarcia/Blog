@@ -5,28 +5,28 @@ draft: false
 math: true
 ---
 
-In this post I will be present a python code for ESO optimization method.
+In this post, I will present a Python code for the ESO optimization method.
 
 ### Problem statement
 
-Let us consider a cantilever beam with a vertical force of 10kN, dimensions 20x10 meters, young module of 206.8 GPa and Poisson's ratio 0.28 figure 1 $RR=0.01$, $ER=0.005$.
+Let us consider a cantilever beam with a vertical force of 10kN, dimensions 20x10 meters, a young module of 206.8 GPa and Poisson's ratio 0.28 figure 1 $RR=0.01$, $ER=0.005$.
 
 ![Scenario 1: Across columns](/ESO_model.png)
 |:--:|
 | <b>Figure 1. Beams's diagram.</b>|
 
 
-First, let's consider the following steps to do algorithm:
+First, let's consider the following steps to do the algorithm:
 
 1. Discretization of the model in finite elements
 2. Perform the finite element analysis of the structure.
 3. Calculate the sensitivity number for each element.
-4. Remove a number of elements with the lowest ensitivity nubers according to a predifined element removal ratio ERR.
-5. Repeat step 2 to 4 until volume fraction is reached.
+4. Remove a number of elements with the lowest sensitivity numbers according to a predefined element removal ratio ERR.
+5. Repeat steps 2 to 4 until the volume fraction is reached.
 
 ### Discretization
 
-The discretization is done with the following function with the help of numpy
+The discretization is done with the following function with the help of NumPy
 
 ``` python
 def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):
@@ -82,7 +82,7 @@ def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):
     return nodes, mats, els, loads, BC
 ```
 
-with this function it's define the necessary variables to do finite element analysis
+This function will define the necessary variables to do finite element analysis
 
 ``` python
 length = 20
@@ -95,7 +95,7 @@ elsI,nodesI = np.copy(els), np.copy(nodes)
 
 ### Finite element analysis
 
-With these variables we can now solve the problem and obtain the displacements, deformations and stresses. To compute the finite element analysis the library [Solidspy](https://github.com/AppliedMechanics-EAFIT/SolidsPy) is used .
+With these variables, we can now solve the problem and obtain the displacements, deformations and stresses. To compute the finite element analysis the library [Solidspy](https://github.com/AppliedMechanics-EAFIT/SolidsPy) is used.
 
 ``` python
 def preprocessing(nodes, mats, els, loads):
@@ -176,14 +176,14 @@ def postprocessing(nodes, mats, els, bc_array, disp):
 
 ### Sensitivity computation 
 
-To calculate the sensitivity number of each elements we have to compute the following equation:
+To calculate the sensitivity number of each element we have to compute the following equation:
 
 $$
 \begin{equation}
 \alpha^e_i = \frac{1}{2}u^T_i K_iu_i
 \end{equation}
 $$
-where $u_i$  and $K_i$  are the element's displacement and the local stiffnes matrix, respectively.
+where $u_i$  and $K_i$  are the element's displacement and the local stiffness matrix, respectively.
 
 ``` python
 def sensi_el(nodes, mats, els, UC):
@@ -227,11 +227,11 @@ def sensi_el(nodes, mats, els, UC):
 
 ### Optimization
 
-First let's define the number of iteration `niter`, rejection ratio `RR`,  the evolution ratio `ER` and the optimila volume fraction `V_opt`. 
+First, let's define the number of iteration `niter`, the rejection ratio `RR``,  the evolution ratio `ER` and the optimal volume fraction `V_opt`. 
 
-In the ciclye sequence first we check if the system is still in equilibrium if it's not so the loop will be stop; after that, we solve the problem and calculate the sensitivity number, after this we get the `mask_del` creating a bool array with the values of `sensi_number` array that are smaller than `RR` , the positions with value `True` will indicate that the element in that exact position will be removed, with the function `protect_els()` we will avoid the removal of the elements where the loads and boundary conditions were defined.
+In the cycle sequence, first, we check if the system is still in equilibrium if it's not so the loop will stop; after that, we solve the problem and calculate the sensitivity number, after this we get the `mask_del` creating a bool array with the values of `sensi_number` array that are smaller than `RR`, the positions with value `True` will indicate that the element in that exact position will be removed, with the function `protect_els()` we will avoid the removal of the elements where the loads and boundary conditions were defined.
 
-After deleting the elements of the array we have to do a step more to ensure that the FEM analysis won't fail withthe new `els` array, for this we have to restrict the free nodes `del_node()`. As last step we encrease the rejection ratio.
+After deleting the elements of the array we have to do a step more to ensure that the FEM analysis won't fail with the new `els` array, for this we have to restrict the free nodes `del_node()`. As the last step, we increase the rejection ratio.
 
 ``` python
 def is_equilibrium(nodes, mats, els, loads):
@@ -404,7 +404,7 @@ print(RR)
 
 # Results
 
-As can be seen in _figure 2_ the results of the exercise proposed at the beginning of the post are presented, for graph _2.a_ it is evident that the method does converge to an optimal structure, however several free elements are evident that can also be eliminated to get a better topology. This problem occurs because the method does not take into account the dependency of the mesh and the checkerboard pattern. For better results, you can vary $RR$, $ER$, or also increase the number of finite elements.
+As can be seen in _figure 2_ the results of the exercise proposed at the beginning of the post are presented, in the graph _2.a_ it is evident that the method does converge to an optimal structure, however, several free elements are evident that can also be eliminated to get a better topology. This problem occurs because the method does not take into account the dependency of the mesh and the checkerboard pattern. For better results, you can vary $RR$, $ER$, or also increase the number of finite elements.
 
 ![Scenario 1: Across columns](/ESO_2.png)
 |:--:|

@@ -5,29 +5,29 @@ draft: false
 math: true
 ---
 
-In this post I will be present a python code for BESO optimization method.
+In this post, I will present a Python code for the BESO optimization method.
 
 ### Problem statement
 
-Let us consider a cantilever beam with a vertical force of 10kN, dimensions 20x10 meters, young module of 206.8 GPa and Poisson's ratio 0.28 figure 1 $RR=0.01$, $ERR=0.005$.
+Let us consider a cantilever beam with a vertical force of 10kN, dimensions 20x10 meters, a young module of 206.8 GPa and Poisson's ratio 0.28 figure 1 $RR=0.01$, $ERR=0.005$.
 
 ![Scenario 1: Across columns](/ESO_model.png)
 |:--:|
 | <b>Figure 1. Beams's diagram.</b>|
 
 
-First, let's consider the following steps to do algorithm:
+First, let's consider the following steps to do the algorithm:
 
 1. Discretize the domain and assign the initial property, 0 or 1, for each element.
 2. Perform the finite element analysis and calculate the sensitivity according to.
-3. Average the sensitivity of the sensitivity with history and save the result for the next iteration .
+3. Average the sensitivity of the sensitivity with history and save the result for the next iteration.
 4. Determine the target volume for the next iteration.
 5. Add and remove items.
 6. Repeat steps 2 to 5 until the optimal volume is reached or the convergence criterion is satisfied.
 
 ### Discretization
 
-The discretization is done with the following function with the help of numpy
+The discretization is done with the following function with the help of NumPy
 
 ``` python
 def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):
@@ -83,7 +83,7 @@ def beam(L=10, H=10, F=-1000000, E=206.8e9, v=0.28, nx=20, ny=20):
     return nodes, mats, els, loads, BC
 ```
 
-with this function it's define the necessary variables to do finite element analysis
+with this function will define the necessary variables to do finite element analysis
 
 ``` python
 length = 20
@@ -99,7 +99,7 @@ UCI, E_nodesI, S_nodesI = postprocessing(nodes, mats, els, IBC, UG)
 
 ### Finite element analysis
 
-With these variables we can now solve the problem and obtain the displacements, deformations and stresses. To compute the finite element analysis the library [Solidspy](https://github.com/AppliedMechanics-EAFIT/SolidsPy) is used .
+With these variables, we can now solve the problem and obtain the displacements, deformations and stresses. To compute the finite element analysis the library [Solidspy](https://github.com/AppliedMechanics-EAFIT/SolidsPy) is used.
 
 ``` python
 def preprocessing(nodes, mats, els, loads):
@@ -457,7 +457,7 @@ def sensitivity_filter(nodes, centers, sensi_nodes, r_min):
 
 ```
 
-First let's define the number of iteration `niter`, `ERR` the evolutinary rejection ratio and `t` the allowable convergence tolarance, the mnimum radius `r_min` and the optimal volume `V_opt`. After the define these variable we compute the adjacency array for the nodes `adjacency_nodes()` and the center of each elements `center_els()`, these arrays will be used to achieved the filter scheme.
+Firs, let's define the number of iteration `niter`, `ERR` the evolutionary rejection ratio and `t` the allowable convergence tolerance, the minimum radius `r_min` and the optimal volume `V_opt`. After defining these variables we compute the adjacency array for the nodes `adjacency_nodes()` and the center of each element `center_els()`, these arrays will be used to achieve the filter scheme.
 
 The loop's sequence is define with:
 
@@ -543,7 +543,7 @@ for i in range(niter):
 
 # Results
 
-As can be seen in _figure 2_ the results of the exercise proposed at the beginning of the post are presented, for graph _2.a_ it is evident that the method converge to an optimal structure. In this BESO program the dependency of the mesh and the checkerboard pattern problems are concider under the filter scheme _2.d_.
+As can be seen in _figure 2_ the results of the exercise proposed at the beginning of the post are presented, in the graph _2.a_ it is evident that the method converges to an optimal structure. In this BESO program, the dependency of the mesh and the checkerboard pattern problems are considered under the filter scheme _2.d_.
 
 ![Scenario 1: Across columns](/BESO.png)
 |:--:|
