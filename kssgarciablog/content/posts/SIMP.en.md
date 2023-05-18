@@ -199,12 +199,12 @@ $$
 
 where $r_{ij}$ is the distance between the centers of the elements $i$ and $j$. The weight $H_{ij}$ is zero outside the circle of radius $r_{min}$.
 
-
-1. Discretize the domain and assign the initial property, $x_{min}$ or 1, to each element.
-2. Perform the finite element analysis and calculate the sensitivity according to (12).
-3. Apply the filter scheme (15).
-4. Add and remove items.
-5. Repeat steps 2 to 4 until reaching volume $V^*$.
+1. Discretized the domain and initialize the design variables.
+2. Perform the finite element analysis.
+3. Calculate the sensitivity of the objective function with respect to the density of each element.
+4. Perform the optimality criteria.
+5. Compute the error of the density.
+6. Repeat steps 2 to 5 until the mass $M^*$ or the convergence of the error is achieved. 
 
 ## References
 

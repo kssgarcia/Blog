@@ -202,11 +202,12 @@ $$
 donde $r_{ij}$ es la distancia entre los centros de los elementos $i$ y $j$. El peso $H_{ij}$ es cero fuera del circulo de radio $r_{min}$.
 
 
-1. Discretizar el dominio y asignar la propiedad inicial, $x_{min}$ o 1, para cada elemento.
-2. Realizar el análisis de elementos finito y calcular la sensibilidad de acuerdo con (12).
-3. Aplicar el esquema de filtro (15).
-4. Añadir y eliminar elementos.
-5. repetir los pasos del 2 al 4 hasta llegar al volumen $V^*$.
+1. Discretizar el dominio e inicializar las variables de diseño.
+2. Realice el análisis de elementos finitos.
+3. Calcular la sensibilidad de la función objetivo con respecto a la densidad de cada elemento.
+4. Realizar los criterios de optimalidad.
+5. Calcular el error de la densidad.
+6. Repita los pasos 2 a 5 hasta que se logre la masa $M^*$ o la convergencia del error.
 
 ## Referencias
 

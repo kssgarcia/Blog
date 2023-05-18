@@ -1,5 +1,5 @@
 ---
-title: "BESO optimzation code"
+title: "BESO optimization code"
 date: 2023-04-24T11:48:52-05:00
 draft: false
 math: true
